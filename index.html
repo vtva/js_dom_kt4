@@ -237,7 +237,7 @@
                 let cardValidThroughYear = document.querySelector("#cardValidThroughYear");
                 let cardValidThrough = cardValidThroughMonth.value + " / " + cardValidThroughYear.value.slice(2);
                 
-                if (bankName.value == "" || paymentSystemType.value == "" || cardNumber.value.length < 16 || cardHolderName.value == "" || cardValidThroughMonth.value == "" || cardValidThroughYear.value == "") {
+                if (bankName.value == "" || paymentSystemType.value == "" || cardNumber.value == "" || cardHolderName.value == "" || cardValidThroughMonth.value == "" || cardValidThroughYear.value == "") {
                     alert("Данные не дозаполнены!");
                     return;
                 }
