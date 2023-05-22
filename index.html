@@ -1,0 +1,317 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Платежная форма</title>
+        <style>
+            header {
+                background-color: #5c5af3; 
+                color: white;   
+                padding: 30px;
+            }
+            .header_lefttext {
+                text-align: left;
+                font-size: xx-large;
+                display: inline-block;
+            }
+            .header_righttext {
+                margin-top: 10px;
+                float: right;
+                font-size: medium;
+                display: inline-block;
+            }
+            .mainContainer {
+                text-align: left;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .paymentBlock {
+                overflow: hidden;
+                margin: 20px;
+                margin-right: 50px;
+                width: 386px;
+                height: 170px;
+            }
+            form#paymentData {
+                position: relative;
+                width: 386px;
+            }
+            form#paymentData > label {
+                display: inline-block; 
+                width: 210px;
+            }            
+            form#paymentData > * {
+                margin: 5 0 5 0;
+            
+            }
+            form#paymentData > .commonFiledsSize {
+                position: absolute;
+                left: 215px;
+                width: 170px;
+            }
+            form#paymentData > #cardValidThroughMonth {
+                position: absolute;
+                left: 215px;
+                width: 40;
+            }
+            form#paymentData > #cardValidThroughYear {
+                position: absolute;
+                left: 260px;
+                width: 125;
+            }
+            form#paymentData > button[type=submit] {
+                position: absolute;
+                right: 0px;            
+            }
+            #ccImage {
+                border-width: 1px;
+                border-style: solid;
+                border-color: black;               
+                padding: 10px;
+                width: 220px;
+                height: 110px;
+                overflow: hidden;
+                position: relative;                
+            }
+            #ccImage_BankLogo img{
+                max-width: 40%;
+                object-fit: contain;
+                position: absolute;
+                left: 5px;
+                top: 0px;                
+            }
+            #ccImage_CardNumber {
+                position: absolute;
+                left: 35px;
+                top: 45px;
+                font-size: larger;                
+            }
+            #ccImage_CardHolder {
+                position: absolute;
+                left: 10px;
+                top: 75px;
+                font-size: small;
+            }
+            #ccImage_CardValidThrough {
+                position: absolute;
+                left: 175px;
+                top: 75px;                
+            }
+            #ccImage_PaymentSystemLogo img{
+                max-height: 40%;
+                max-width: 30%;
+                object-fit: contain;
+                position: absolute;
+                left: 180px;
+                top: 85px;                
+            }
+
+            #paymentTableBlock {
+                padding: 20px;
+                text-align: left;
+            }            
+        </style>
+	</head>
+	<body onload="addEvents()">
+        <script>
+            function addEvents() {
+                let paymentData = document.querySelector("#paymentData");
+                
+                paymentData.addEventListener('keydown', function(event) {
+                    if(event.keyCode == 13) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+            function bankNameChange() {
+                let bankName = document.querySelector("#bankName").value;
+                let ccImage_BankLogo = document.querySelector("#ccImage_BankLogo").querySelector("img");
+                
+                switch (bankName) {
+                    case "Сбербанк": 
+                        ccImage_BankLogo.src = "images/sber.png";
+                        ccImage_BankLogo.style.top = 0;
+                        break;
+                    case "ВТБ": 
+                        ccImage_BankLogo.src = "images/vtb.png";
+                        ccImage_BankLogo.style.top = 0;
+                        break;
+                    case "Альфа-Банк": 
+                        ccImage_BankLogo.src = "images/alfa.png";
+                        ccImage_BankLogo.style.top = 10;
+                        break;
+                    default: 
+                        ccImage_BankLogo.src = "";
+                        ccImage_BankLogo.style.top = 0;
+                }
+            }
+
+            function paymentSystemTypeChange() {
+                let paymentSystemType = document.querySelector("#paymentSystemType").value;
+                let ccImage_PaymentSystemLogo = document.querySelector("#ccImage_PaymentSystemLogo").querySelector("img");
+                
+                switch (paymentSystemType) {
+                    case "Visa": 
+                        ccImage_PaymentSystemLogo.src = "images/visa.png";
+                        ccImage_PaymentSystemLogo.style.left = 180;
+                        break;
+                    case "Mastercard": 
+                        ccImage_PaymentSystemLogo.src = "images/master.png";
+                        ccImage_PaymentSystemLogo.style.left = 180;
+                        break;
+                    case "Мир": 
+                        ccImage_PaymentSystemLogo.src = "images/mir.png";
+                        ccImage_PaymentSystemLogo.style.left = 170;
+                        break;
+                    default: 
+                        ccImage_BankLogo.src = "";
+                        ccImage_PaymentSystemLogo.style.left = 180;
+                }
+            }
+
+            function cardNumberChange() {
+                let cardNumber = document.querySelector("#cardNumber");
+                let ccImage_cardNumber = document.querySelector("#ccImage_CardNumber");
+
+                ccImage_cardNumber.textContent = "";
+
+                for (var i = 0; i < cardNumber.value.length; i++) {
+                    if (i % 4 == 0) ccImage_cardNumber.textContent += " " + cardNumber.value.charAt(i)
+                    else ccImage_cardNumber.textContent += cardNumber.value.charAt(i);                    
+                }
+            }
+
+            function cardHolderNameChange() {
+                let cardHolderName = document.querySelector("#cardHolderName");
+                let ccImage_CardHolder = document.querySelector("#ccImage_CardHolder");
+
+                ccImage_CardHolder.textContent = cardHolderName.value;                
+            }
+
+            function cardValidThroughChange() {
+                let cardValidThroughMonth = document.querySelector("#cardValidThroughMonth");
+                let cardValidThroughYear = document.querySelector("#cardValidThroughYear");
+                let ccImage_CardValidThrough = document.querySelector("#ccImage_CardValidThrough");
+
+                ccImage_CardValidThrough.textContent = cardValidThroughMonth.value + " / " + cardValidThroughYear.value.slice(2);
+                
+            }
+
+            function clearForm() {
+                let form = document.querySelector("#paymentData");    
+                let inputs = form.getElementsByTagName('input');
+                
+                for (let i = 0; i<inputs.length; i++) {
+                    switch (inputs[i].type) {
+                    case 'text':
+                        inputs[i].value = "";                        
+                    }
+                };
+           
+                let selects = form.getElementsByTagName('select');
+                for (let i = 0; i<selects.length; i++) {
+                    selects[i].selectedIndex = 0;
+                };
+
+                let ccImage = document.querySelector("#ccImage");
+                let divs = ccImage.getElementsByTagName('div');
+                let divImages;
+
+                for (let i = 0; i<divs.length; i++) {
+                    divs[i].textContent = "";
+
+                    divImages = divs[i].getElementsByTagName('img');
+                    for (let j = 0; j<divImages.length; j++) {
+                        divImages[j].src = "";   
+                    }
+                };
+            }
+
+            function addPaymentData() {
+                let bankName = document.querySelector("#bankName");
+                let paymentSystemType = document.querySelector("#paymentSystemType");
+                let cardNumber = document.querySelector("#cardNumber");
+                let cardHolderName = document.querySelector("#cardHolderName");
+                
+                let cardValidThroughMonth = document.querySelector("#cardValidThroughMonth");
+                let cardValidThroughYear = document.querySelector("#cardValidThroughYear");
+                let cardValidThrough = cardValidThroughMonth.value + " / " + cardValidThroughYear.value.slice(2);
+                
+                if (bankName.value == "" || paymentSystemType.value == "" || cardNumber.value.length < 16 || cardHolderName.value == "" || cardValidThroughMonth.value == "" || cardValidThroughYear.value == "") {
+                    alert("Данные не дозаполнены!");
+                    return;
+                }
+
+                let paymentTable = document.querySelector("#paymentTable");
+
+                paymentTable.innerHTML += "<tr><td>" + bankName.value + "</td><td>" + paymentSystemType.value + "</td><td>" + cardNumber.value + "</td><td>" + cardHolderName.value + "</td><td>" + cardValidThrough + "</td></tr>";
+
+                clearForm();
+            }
+        </script>        
+        <header>            
+            <div class="header_lefttext">Платежная форма</div>                
+            <div class="header_righttext">Воронов Александр Анатольевич</div>            
+        </header>        
+        <div class="mainContainer">
+            <div class="paymentBlock">
+                <form id="paymentData">
+                    <label for="bankName">Название банка: </label>
+                    <select id="bankName" class="commonFiledsSize" onchange="bankNameChange()">
+                        <option></option>
+                        <option>Сбербанк</option>
+                        <option>ВТБ</option>
+                        <option>Альфа-Банк</option>
+                    </select><br>
+                    <label for="paymentSystemType">Тип платежной системы: </label>
+                    <select id="paymentSystemType" class="commonFiledsSize" onchange="paymentSystemTypeChange()">
+                        <option></option>
+                        <option>Visa</option>
+                        <option>Mastercard</option>
+                        <option>Мир</option>
+                    </select><br>
+                    <label for="cardNumber">Номер карты: </label><input id="cardNumber" type="text" maxlength="16" class="commonFiledsSize" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onchange="cardNumberChange()"><br>
+                    <label for="cardHolderName">Имя держателя карты: </label><input id="cardHolderName" type="text" maxlength="25" class="commonFiledsSize" onchange="cardHolderNameChange()"><br>
+                    <label for="cardValidThroughMonth">Месяц и год окончания карты: </label>
+                    <select id="cardValidThroughMonth" onchange="cardValidThroughChange()">
+                        <option></option>
+                        <option>01</option>
+                        <option>02</option>
+                        <option>03</option>
+                        <option>04</option>
+                        <option>05</option>
+                        <option>06</option>
+                        <option>07</option>
+                        <option>08</option>
+                        <option>09</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                    </select>
+                    <select id="cardValidThroughYear" onchange="cardValidThroughChange()">
+                        <option></option>
+                        <option>2023</option>
+                        <option>2024</option>
+                        <option>2025</option>
+                        <option>2026</option>
+                    </select><br>                    
+                    <button type="button" onclick="addPaymentData()">Отправить</button>
+                </form>
+            </div>
+            <div class="paymentBlock">
+                <div id="ccImage">
+                    <div id="ccImage_BankLogo"><img src=""></div>
+                    <div id="ccImage_CardNumber"></div>
+                    <div id="ccImage_CardHolder"></div>
+                    <div id="ccImage_CardValidThrough"></div>
+                    <div id="ccImage_PaymentSystemLogo"><img src=""></div>
+                </div>
+            </div>
+        </div>
+        <div id="paymentTableBlock">
+            <table id="paymentTable" border="1px" cellspacing="0" cellpadding="5px">
+                <tr><th>Название банка</th><th>Тип платежной системы</th><th>Номер карты</th><th>Имя держателя карты</th><th>Месяц и год окончания карты</th></tr>
+            </table>
+        </div>
+    </body>
+</html>
